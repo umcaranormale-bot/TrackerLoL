@@ -15,9 +15,13 @@ Nesse código tem alguns detalhes para explicar:
 
 Como isso funciona? Esse comando que está destacado, nós podemos mudar permanentemente os dados dos campeões que estão desatualizados para os novos dados do tempo de recarga dos campeões vistos no site "u.gg" ou "op.gg", como podem ver no comando que está destacado, já tem alguns comentários explicando como é feito, basta colocar adicionar o comando: "put("NomeDoCampeao", new String[]{"Q", "W", "E", "R"});" e substituir os valores como mostrado no exemplo do comando e por fim, dar um rebuild no código para ele carregar essa nova alteração. É quase tipo o que a equipe dos sites u.gg e op.gg faz.
 
-5 - Sobre as runas pequenas: você necessita de uma chave API do site Riot Developer: https://developer.riotgames.com
 
-Gere sua chave API que expira em 24 horas a cada nova chave API gerada e copie ela e cole dentro do "chave_riot.txt", sempre que expirar a chave, terá que colar a nova chave API gerada dentro desse "chave_riot.txt", isso tudo para mostrar as runas pequenas. Já a u.gg e o op.gg, eles tem uma chave API permanente sobre isso que a Riot forneceu para eles, bom isso já é outra história somos apenas usuários comuns utilizando um código comum com um .bat.
+
+*5 - SOBRE AS RUNAS PEQUENAS:* Você vai necessitar de uma chave API do site Riot Developer: https://developer.riotgames.com e fazer esses seguintes passos caso você queira que apareça as runas pequenas:
+
+Gere sua chave API que expira em 24 horas a cada nova chave API gerada e copie ela e cole dentro do "chave_riot.txt", sempre que expirar a chave, terá que colar a nova chave API gerada dentro desse "chave_riot.txt", isso tudo para mostrar as runas pequenas. Já a u.gg e o op.gg, eles tem uma chave API permanente sobre isso que a Riot forneceu para eles, bom, isso já é outra história somos apenas usuários comuns utilizando um código comum com um .bat.
+
+*Agora rode o "iniciar.bat" na tela de carregamento após a seleção de campeões! Após alguns minutos(3 minutos provavelmente) as runas pequenas vão aparecer*
 
 Tudo isso para fazer, é caso você queira ter um .bat seu, que você dê apenas um clique e apareça na aba do seu navegador apenas os campeões com os dados que você quer.
 
