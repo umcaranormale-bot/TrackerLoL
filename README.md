@@ -15,6 +15,9 @@ Nesse código tem alguns detalhes para explicar:
   }
 </style>
 
+<p class="linha-custom">Este parágrafo tem uma borda azul tracejada logo abaixo dele.</p>
+<p>Este é o conteúdo seguinte.</p>
+
 2 - Porém os dados desse site, alguns tempo de recarga de campeões estão desatualizados, pois eles demoram mais pra atualizar esses dados do site do que o próprio jogo.
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
