@@ -9,11 +9,15 @@ Nesse código tem alguns detalhes para explicar:
 
 2 - Porém os dados desse site, alguns tempo de recarga de campeões estão desatualizados, pois eles demoram mais pra atualizar esses dados do site do que o próprio jogo.
 
-3 - Então, e quando o Tracker rastrear um campeão, como vou saber que o tempo de recarga está errado? Você pode simplesmente ir no site u.gg ou op.gg e procurar pelo campeão e ver o tempo de recarga das habilidades, eles têm uma equipe gigante e um banco de dados muito mai estruturado para isso, pois eles atualizam manualmente a cada atualização e não dependem totalmente desse site Data DDragon.
+3 - Então, e quando o Tracker rastrear um campeão, como vou saber que o tempo de recarga está errado? Você pode simplesmente ir no site u.gg ou op.gg e procurar pelo campeão e ver o tempo de recarga das habilidades, eles têm uma equipe gigante e um banco de dados muito mais estruturado para isso, pois eles atualizam manualmente a cada atualização e não dependem totalmente desse site Data DDragon.
 
 4 - Então para que serve o Tracker se ele pode me dar informações erradas sobre o tempo de recarga de algum campeão? Bom, no código disponibilizado que você mesmo pode editar nesta parte do código aqui: <img width="1332" height="882" alt="image" src="https://github.com/user-attachments/assets/90fa2f70-0438-4f26-b3d1-a87deb2b5e25" />
 
-Como isso funciona? Esse comando que está destacado, nós podemos mudar permanentemente os dados dos campeões que estão desatualizados para os novos dados do tempo de recarga dos campeões vistos no site "u.gg" ou "op.gg", como podem ver no comando que está destacado, já tem alguns comentários explicando como é feito, basta colocar adicionar o comando: "put("NomeDoCampeao", new String[]{"Q", "W", "E", "R"});" e substituir os valores como mostrado no exemplo do comando e por fim, dar um rebuild no código para ele carregar essa nova alteração. É quase tipo o que a equipe dos sites u.gg e op.gg faz.
+*Como isso funciona? Esse comando que está destacado, nós podemos mudar permanentemente os dados dos campeões que estão desatualizados para os novos dados do tempo de recarga dos campeões vistos no site "u.gg" ou "op.gg".*
+
+*Como podem ver no comando que está destacado, já tem alguns comentários explicando como é feito, basta colocar adicionar o comando: "put("NomeDoCampeao", new String[]{"Q", "W", "E", "R"});"* 
+
+*E substitua os valores como mostrado no exemplo do comando e por fim, dar um rebuild no código para ele carregar essa nova alteração. É quase tipo o que a equipe dos sites u.gg e op.gg faz.*
 
 
 
