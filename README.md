@@ -7,7 +7,13 @@ Nesse código tem alguns detalhes para explicar:
 
 1 - Os dados do tempo de recarga dos campeões vem desse site onde tem todos os dados estáticos aqui: https://ddragon.leagueoflegends.com/cdn/14.8.1/data/pt_BR/champion.json. O Data Dragon (DDragon) fornece dados estáticos do League of Legends, incluindo IDs de campeões (campo chave, numérico) e chaves (campo id, baseado em nome), acessíveis por meio de arquivos JSON.
 
-<hr></hr>
+<style>
+  .linha-custom {
+    border-bottom: 2px dashed #3498db; /* Linha azul tracejada */
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+  }
+</style>
 
 2 - Porém os dados desse site, alguns tempo de recarga de campeões estão desatualizados, pois eles demoram mais pra atualizar esses dados do site do que o próprio jogo.
 
