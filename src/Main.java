@@ -1,9 +1,6 @@
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
-import java.util.HashMap;
-import java.util.Map; // Opcional, mas boa prática
-
 import java.awt.Desktop;
 import java.io.File;
 import java.io.OutputStream;
@@ -19,7 +16,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import java.security.cert.X509Certificate;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -29,20 +25,21 @@ public class Main {
 
     // Tabela de correções manuais (Nome do Campeão -> [Q, W, E, R])
     static HashMap<String, String[]> excecoesCooldowns = new HashMap<>() {{
-        // put("NomeDoCampeao", new String[]{"Q", "W", "E", "R"});
-        // Para adicionar outro campeão no futuro, basta copiar a linha acima e mudar os valores
-        //
-
+        // put("Sejuani", new String[]{"11/10/9/8/7", "12/9/6/3/0", "16/15.5/15/14.5/14", "120/105/90"});
     }};
 
     static HashMap<Integer, String> dicionarioCampeoes = new HashMap<>();
     static HashMap<Integer, String> dicionarioRunas = new HashMap<>();
     static String riotApiKey = "";
 
+    // Variável global para manter o Tracker sempre no patch atual do LoL
+    static String versaoAtual = "16.8.1";
+
     static HashMap<String, JSONArray> cacheRunasNuvem = new HashMap<>();
     static long proximaTentativaNuvem = 0;
     static boolean sucessoNaNuvem = false;
 
+    // Colocamos VERSAO_DDRAGON aqui para substituir automaticamente depois
     static String htmlInterface = """
         <!DOCTYPE html>
         <html lang="pt-BR">
@@ -87,7 +84,7 @@ public class Main {
                         inimigos.forEach(inimigo => {
                             const card = document.createElement('div');
                             card.className = 'campeao-card';
-                            const imgUrl = `https://ddragon.leagueoflegends.com/cdn/14.8.1/img/champion/${inimigo.nome}.png`;
+                            const imgUrl = `https://ddragon.leagueoflegends.com/cdn/VERSAO_DDRAGON/img/champion/${inimigo.nome}.png`;
                             
                             let htmlHabilidades = '';
                             inimigo.habilidades.forEach(hab => {
@@ -221,7 +218,7 @@ public class Main {
 
             if (resAccount.statusCode() != 200) {
                 System.out.println("⚠️ Erro ao converter Riot ID. A Nuvem respondeu: " + resAccount.statusCode());
-                proximaTentativaNuvem = System.currentTimeMillis() + 60000; // Tenta de novo em 1 minuto
+                proximaTentativaNuvem = System.currentTimeMillis() + 60000;
                 return mapaRunasNuvem;
             }
             String puuidPublico = new JSONObject(resAccount.body()).getString("puuid");
@@ -248,20 +245,19 @@ public class Main {
                     mapaRunasNuvem.put(nomeCampeao, runasTraduzidas);
                 }
 
-
                 cacheRunasNuvem = mapaRunasNuvem;
                 sucessoNaNuvem = true;
 
             } else if (resSpectator.statusCode() == 403) {
                 System.out.println("\n🔴 ERRO CRÍTICO: Chave da Riot VENCEU ou é inválida!");
                 System.out.println("Cole uma nova no chave_riot.txt. O Tracker tentará lê-la de novo em 1 minuto.");
-                proximaTentativaNuvem = System.currentTimeMillis() + 60000; // Bloqueia por 1 minuto
+                proximaTentativaNuvem = System.currentTimeMillis() + 60000;
             } else if (resSpectator.statusCode() == 404) {
                 System.out.println("⏳ Partida ranqueada com delay (Erro 404). O Tracker tentará de novo sozinho em 1 minuto...");
-                proximaTentativaNuvem = System.currentTimeMillis() + 60000; // Bloqueia por 1 minuto
+                proximaTentativaNuvem = System.currentTimeMillis() + 60000;
             } else {
                 System.out.println("⚠️ Erro desconhecido: " + resSpectator.statusCode());
-                proximaTentativaNuvem = System.currentTimeMillis() + 60000; // Bloqueia por 1 minuto
+                proximaTentativaNuvem = System.currentTimeMillis() + 60000;
             }
         } catch (Exception e) {}
 
@@ -294,27 +290,21 @@ public class Main {
                         String nomeCampeao = jogador.getString("championName");
                         JSONObject inimigoData = buscarSpellsDoCampeao(nomeCampeao);
 
-
                         if (mapaRunasNuvem.containsKey(nomeCampeao)) {
-
                             inimigoData.put("runas_completas", mapaRunasNuvem.get(nomeCampeao));
                         } else {
-
                             JSONArray runasLocais = new JSONArray();
                             try {
                                 JSONObject runasAPI = jogador.getJSONObject("runes");
                                 runasLocais.put(runasAPI.getJSONObject("keystone").getString("displayName"));
                                 runasLocais.put(runasAPI.getJSONObject("secondaryRuneTree").getString("displayName"));
                                 runasLocais.put("(Detalhes Ocultos em Partidas Contra Bots)");
-                            } catch (Exception e) {
-
-                            }
+                            } catch (Exception e) {}
 
                             if(runasLocais.length() > 0){
                                 inimigoData.put("runas_completas", runasLocais);
                             }
                         }
-
                         arrayInimigos.put(inimigoData);
                     }
                 }
@@ -332,7 +322,7 @@ public class Main {
             String tokenBase64 = Base64.getEncoder().encodeToString(("riot:" + partes[3]).getBytes());
 
             HttpRequest requestLCU = HttpRequest.newBuilder()
-                    .uri(URI.create("https://127.0.0.1:" + partes[2] + "/lol-champ-select/v1/session"))
+                    .uri(URI.create("https://127.0.0.1:" + partes[2] + "/lol-champ-select/v4/session"))
                     .header("Authorization", "Basic " + tokenBase64).GET().build();
 
             HttpResponse<String> responseLCU = clientLCU.send(requestLCU, HttpResponse.BodyHandlers.ofString());
@@ -357,7 +347,6 @@ public class Main {
         JSONArray cooldowns = new JSONArray();
         String[] teclas = {"Q", "W", "E", "R"};
 
-        // VERIFICAÇÃO DE EXCEÇÃO: Se o campeão estiver na nossa tabela, usamos os valores manuais
         if (excecoesCooldowns.containsKey(nomeCampeao)) {
             String[] temposManuais = excecoesCooldowns.get(nomeCampeao);
             for (int i = 0; i < 4; i++) {
@@ -367,12 +356,11 @@ public class Main {
                 cooldowns.put(skill);
             }
             System.out.println("-> Usando valores CORRIGIDOS para: " + nomeCampeao);
-        }
-        // SE NÃO ESTIVER NA TABELA: Vai buscar no Data Dragon normalmente
-        else {
+        } else {
             try {
+                // AQUI usamos a versão dinâmica para nunca quebrar em atualizações futuras
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(URI.create("https://ddragon.leagueoflegends.com/cdn/16.8.1/data/pt_BR/champion/" + nomeCampeao + ".json"))
+                        .uri(URI.create("https://ddragon.leagueoflegends.com/cdn/" + versaoAtual + "/data/pt_BR/champion/" + nomeCampeao + ".json"))
                         .GET().build();
                 HttpResponse<String> response = clientNormal.send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -394,25 +382,27 @@ public class Main {
 
     public static void carregarDicionarios() {
         try {
-            // 1. Descobre qual é a versão mais recente do LoL automaticamente
             HttpRequest reqVersion = HttpRequest.newBuilder()
                     .uri(URI.create("https://ddragon.leagueoflegends.com/api/versions.json")).GET().build();
             JSONArray versoes = new JSONArray(clientNormal.send(reqVersion, HttpResponse.BodyHandlers.ofString()).body());
-            String v = versoes.getString(0); // Pega a primeira versão da lista (a mais nova)
-            System.out.println("-> Versão detectada: " + v);
 
-            // 2. Carrega os Campeões usando a versão dinâmica 'v'
+            // AQUI salvamos a versão atual na variável global
+            versaoAtual = versoes.getString(0);
+            System.out.println("-> Versão detectada: " + versaoAtual);
+
+            // Injetamos a versão correta no nosso código HTML para as fotos aparecerem
+            htmlInterface = htmlInterface.replace("VERSAO_DDRAGON", versaoAtual);
+
             HttpRequest reqCamp = HttpRequest.newBuilder()
-                    .uri(URI.create("https://ddragon.leagueoflegends.com/cdn/" + v + "/data/pt_BR/champion.json")).GET().build();
+                    .uri(URI.create("https://ddragon.leagueoflegends.com/cdn/" + versaoAtual + "/data/pt_BR/champion.json")).GET().build();
             JSONObject dados = new JSONObject(clientNormal.send(reqCamp, HttpResponse.BodyHandlers.ofString()).body()).getJSONObject("data");
 
             for (String key : dados.keySet()) {
                 dicionarioCampeoes.put(Integer.parseInt(dados.getJSONObject(key).getString("key")), key);
             }
 
-            // 3. Carrega as Runas usando a versão dinâmica 'v'
             HttpRequest reqRunas = HttpRequest.newBuilder()
-                    .uri(URI.create("https://ddragon.leagueoflegends.com/cdn/" + v + "/data/pt_BR/runesReforged.json")).GET().build();
+                    .uri(URI.create("https://ddragon.leagueoflegends.com/cdn/" + versaoAtual + "/data/pt_BR/runesReforged.json")).GET().build();
             JSONArray arvores = new JSONArray(clientNormal.send(reqRunas, HttpResponse.BodyHandlers.ofString()).body());
 
             for (int i = 0; i < arvores.length(); i++) {
