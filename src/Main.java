@@ -29,11 +29,10 @@ public class Main {
 
     // Tabela de correções manuais (Nome do Campeão -> [Q, W, E, R])
     static HashMap<String, String[]> excecoesCooldowns = new HashMap<>() {{
-        put("Sejuani", new String[]{"18/16.5/15/13.5/12", "9/8/7/6/5", "1.5", "120/105/90"});
-        // Para adicionar outro campeão no futuro, basta copiar a linha acima e mudar os valores
         // put("NomeDoCampeao", new String[]{"Q", "W", "E", "R"});
-        put("Malphite", new String[]{"8", "10/9.5/9/8.5/8", "7", "130/115/100"});
-        put("Ahri", new String[]{"8", "10/9.5/9/8.5/8", "7", "140/120/100"});
+        // Para adicionar outro campeão no futuro, basta copiar a linha acima e mudar os valores
+        //
+
     }};
 
     static HashMap<Integer, String> dicionarioCampeoes = new HashMap<>();
@@ -373,7 +372,7 @@ public class Main {
         else {
             try {
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(URI.create("https://ddragon.leagueoflegends.com/cdn/14.8.1/data/pt_BR/champion/" + nomeCampeao + ".json"))
+                        .uri(URI.create("https://ddragon.leagueoflegends.com/cdn/16.8.1/data/pt_BR/champion/" + nomeCampeao + ".json"))
                         .GET().build();
                 HttpResponse<String> response = clientNormal.send(request, HttpResponse.BodyHandlers.ofString());
 
