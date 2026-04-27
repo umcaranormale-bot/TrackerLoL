@@ -1,6 +1,6 @@
 # TrackerLoL
 # _*(Português)*_
-Isso é um código criado com Java e HTML para ler cooldowns, as ruans principais e a arvore secundária com interface para marcar feitiços do inimigo quando quiser/ This is code created to read cooldowns, all runes from both trees (primary and secondary)..
+Isso é um código criado com Java e HTML para ler cooldowns, as runas principais e a arvore secundária com interface para marcar feitiços do inimigo quando quiser/ This is code created to read cooldowns, all runes from both trees (primary and secondary)..
 
 Nesse código tem alguns detalhes para explicar:
 
