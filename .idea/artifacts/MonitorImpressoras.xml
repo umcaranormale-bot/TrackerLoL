@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="MonitorImpressoras">
+    <output-path>$PROJECT_DIR$/out/artifacts/MonitorImpressoras</output-path>
+    <root id="archive" name="TrackerLoL.jar">
+      <element id="module-output" name="TrackerLoL" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/snmp4j-3.9.7-distribution/snmp4j-3.9.7/dist/snmp4j-3.9.7.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/json-20240303.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
